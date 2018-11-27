@@ -85,6 +85,37 @@
               </div>
             </a-tooltip>
           </div>
+          <div :style="{ marginTop: '24px' }">
+            <a-list :split="false">
+              <a-list-item>
+                <a-select slot="actions" defaultValue="auto" size="small">
+                  <a-select-option value="fixed" v-if="layoutMode !== 'sidemenu'" disabled>固定</a-select-option>
+                  <a-select-option value="auto">流式</a-select-option>
+                </a-select>
+                <a-list-item-meta>
+                  <div slot="title">内容区域宽度</div>
+                </a-list-item-meta>
+              </a-list-item>
+              <a-list-item>
+                <a-switch slot="actions" size="small" :defaultChecked="fixedHeader" @change="handleFixedHeader" />
+                <a-list-item-meta>
+                  <div slot="title">固定 Header</div>
+                </a-list-item-meta>
+              </a-list-item>
+              <a-list-item>
+                <a-switch slot="actions" size="small" :defaultChecked="autoHideHeader" @change="handleFixedHeaderHidden" />
+                <a-list-item-meta>
+                  <div slot="title">下滑时隐藏 Header</div>
+                </a-list-item-meta>
+              </a-list-item>
+              <a-list-item >
+                <a-switch slot="actions" size="small" :disabled="(layoutMode === 'topmenu')" :defaultChecked="fixSiderbar" @change="handleFixSiderbar" />
+                <a-list-item-meta>
+                  <div slot="title" :style="{ textDecoration: layoutMode === 'topmenu' ? 'line-through' : 'unset' }">固定侧边菜单</div>
+                </a-list-item-meta>
+              </a-list-item>
+            </a-list>
+          </div>
         </div>
         <a-divider />
 
@@ -106,7 +137,7 @@
           <a-alert type="warning">
             <span slot="message">
               配置栏只在开发环境用于预览，生产环境不会展现，请手动修改配置文件
-              <a href="https://github.com/sendya/ant-design-pro-vue/blob/master/src/defaultConfig.js" target="_blank">src/defaultConfig.js</a>
+              <a href="https://github.com/sendya/ant-design-pro-vue/blob/master/src/defaultSettings.js" target="_blank">src/defaultSettings.js</a>
             </span>
           </a-alert>
         </div>
@@ -122,7 +153,7 @@
 <script>
   import DetailList from '@/components/tools/DetailList'
   import SettingItem from '@/components/setting/SettingItem'
-  import config from '@/defaultConfig'
+  import config from '@/defaultSettings'
   import { updateTheme, updateColorWeak, colorList } from '@/components/tools/setting'
   import { mapState } from 'vuex'
 
@@ -143,6 +174,9 @@
         layoutMode: state => state.app.layout,
         primaryColor: state => state.app.color,
         colorWeak: state => state.app.weak,
+        fixedHeader: state => state.app.fixedHeader,
+        fixSiderbar: state => state.app.fixSiderbar,
+        autoHideHeader: state => state.app.autoHideHeader,
       })
     },
     mounted () {
@@ -180,12 +214,28 @@
       },
       handleLayout (mode) {
         this.$store.dispatch('ToggleLayoutMode', mode)
+        // 因为顶部菜单不能固定左侧菜单栏，所以强制关闭
+        //
+        this.handleFixSiderbar(false);
       },
       changeColor (color) {
         if (this.primaryColor !== color) {
           this.$store.dispatch('ToggleColor', color)
           updateTheme(color)
         }
+      },
+      handleFixedHeader (fixed) {
+        this.$store.dispatch('ToggleFixedHeader', fixed)
+      },
+      handleFixedHeaderHidden (autoHidden) {
+        this.$store.dispatch('ToggleFixedHeaderHidden', autoHidden)
+      },
+      handleFixSiderbar (fixed) {
+        if (this.layoutMode === 'topmenu') {
+          this.$store.dispatch('ToggleFixSiderbar', false)
+          return;
+        }
+        this.$store.dispatch('ToggleFixSiderbar', fixed)
       }
     },
   }

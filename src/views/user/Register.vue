@@ -9,9 +9,9 @@
         <a-input size="large" type="text" placeholder="邮箱"></a-input>
       </a-form-item>
 
-      <a-popover placement="right" trigger="click" :visible="state.passwordLevelChecked">
+      <a-popover placement="rightTop" trigger="click" :visible="state.passwordLevelChecked">
         <template slot="content">
-          <div :style="{ width: '240px' }">
+          <div :style="{ width: '240px' }" >
             <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span></div>
             <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
             <div style="margin-top: 10px;">
@@ -21,15 +21,11 @@
         </template>
         <a-form-item
           fieldDecoratorId="password"
-          :fieldDecoratorOptions="{rules: [
-          { required: true, message: '至少6位密码，区分大小写'},
-          { validator: this.handlePasswordLevel }
-        ]}"
-        >
-          <a-input size="large" type="password" @click="state.passwordLevelChecked = true" autocomplete="false" placeholder="至少6位密码，区分大小写"></a-input>
+          :fieldDecoratorOptions="{rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: this.handlePasswordLevel }
+        ]}">
+          <a-input size="large" type="password" @click="handlePasswordInputClick" autocomplete="false" placeholder="至少6位密码，区分大小写"></a-input>
         </a-form-item>
       </a-popover>
-
 
       <a-form-item
         fieldDecoratorId="password2"
@@ -40,15 +36,22 @@
 
       <a-form-item
         fieldDecoratorId="mobile"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '手机号' }], validateTrigger: 'blur'}">
-
+        :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }">
+        <!--
         <a-input-group size="large" compact>
           <a-select style="width: 20%" size="large" defaultValue="+86">
             <a-select-option value="+86">+86</a-select-option>
             <a-select-option value="+87">+87</a-select-option>
           </a-select>
-          <a-input style="width: 80%" placeholder="11 位手机号"></a-input>
+          <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
         </a-input-group>
+        -->
+        <a-input size="large" placeholder="11 位手机号">
+          <a-select slot="addonBefore" size="large" defaultValue="+86">
+            <a-select-option value="+86">+86</a-select-option>
+            <a-select-option value="+87">+87</a-select-option>
+          </a-select>
+        </a-input>
       </a-form-item>
 
       <a-row :gutter="16">
@@ -89,6 +92,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import { getSmsCaptcha } from '@/api/login'
 
   const levelNames = {
@@ -129,6 +133,9 @@
       }
     },
     computed: {
+      ...mapState({
+        isMobile: state => state.app.device === 'mobile',
+      }),
       passwordLevelClass () {
         return levelClass[this.state.passwordLevel]
       },
@@ -159,14 +166,13 @@
         }
         this.state.passwordLevel = level
         this.state.percent = level * 30
-        console.log('passwordLevel', this.state.passwordLevel, 'level', level)
         if (level >= 2) {
           if (level >= 3) {
             this.state.percent = 100
           }
           callback()
         } else {
-          if (level == 0) {
+          if (level === 0) {
             this.state.percent = 10
           }
           callback(new Error('密码强度不够'))
@@ -179,6 +185,22 @@
           callback(new Error('两次密码不一致'))
         }
         callback()
+      },
+
+      handlePhoneCheck (rule, value, callback) {
+       console.log('rule:', rule)
+        console.log('value', value)
+        console.log('callback', callback)
+
+       callback()
+      },
+
+      handlePasswordInputClick () {
+        if (!this.isMobile) {
+          this.state.passwordLevelChecked = true
+          return;
+        }
+        this.state.passwordLevelChecked = false
       },
 
       handleSubmit() {
