@@ -13,7 +13,7 @@
     props: {
       title: {
         type: String,
-        default: 'Ant Design Pro',
+        default: '/tool/logo.vue ',
         required: false
       },
       showTitle: {

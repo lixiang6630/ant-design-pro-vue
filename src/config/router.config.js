@@ -13,15 +13,15 @@ export const asyncRouterMap = [
       {
         path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/workplace',
+        redirect: '/dashboard/Analysis',
         component: RouteView,
-        meta: { title: '仪表盘', icon: 'dashboard', permission: [ 'dashboard' ] },
+        meta: { title: '首页管理', icon: 'home', permission: [ 'dashboard' ] },
         children: [
           {
             path: '/dashboard/analysis',
             name: 'Analysis',
             component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: '分析页', permission: [ 'dashboard' ] }
+            meta: { title: '首页', permission: [ 'dashboard' ] }
           },
           {
             path: '/dashboard/monitor',
@@ -33,6 +33,7 @@ export const asyncRouterMap = [
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
+            hidden: true,
             component: () => import('@/views/dashboard/Workplace'),
             meta: { title: '工作台', permission: [ 'dashboard' ] }
           }
@@ -67,85 +68,7 @@ export const asyncRouterMap = [
         ]
       },
 
-      // list
-      {
-        path: '/list',
-        name: 'list',
-        component: PageView,
-        redirect: '/list/query-list',
-        meta: { title: '列表页', icon: 'table', permission: [ 'table' ] },
-        children: [
-          {
-            path: '/list/query-list',
-            name: 'QueryList',
-            component: () => import('@/views/list/TableList'),
-            meta: { title: '查询表格', permission: [ 'table' ] }
-          },
-          {
-            path: '/list/edit-table',
-            name: 'EditList',
-            component: () => import('@/views/list/TableInnerEditList'),
-            meta: { title: '内联编辑表格', permission: [ 'table' ] }
-          },
-          {
-            path: '/list/user-list',
-            name: 'UserList',
-            component: () => import('@/views/list/UserList'),
-            meta: { title: '用户列表', permission: [ 'table' ] }
-          },
-          {
-            path: '/list/role-list',
-            name: 'RoleList',
-            component: () => import('@/views/list/RoleList'),
-            meta: { title: '角色列表', permission: [ 'table' ] }
-          },
-          {
-            path: '/list/permission-list',
-            name: 'PermissionList',
-            component: () => import('@/views/list/PermissionList'),
-            meta: { title: '权限列表', permission: [ 'table' ] }
-          },
-          {
-            path: '/list/basic-list',
-            name: 'BasicList',
-            component: () => import('@/views/list/StandardList'),
-            meta: { title: '标准列表', permission: [ 'table' ] }
-          },
-          {
-            path: '/list/card',
-            name: 'CardList',
-            component: () => import('@/views/list/CardList'),
-            meta: { title: '卡片列表', permission: [ 'table' ] }
-          },
-          {
-            path: '/list/search',
-            name: 'SearchList',
-            component: () => import('@/views/list/search/SearchLayout'),
-            redirect: '/list/search/article',
-            meta: { title: '搜索列表', permission: [ 'table' ] },
-            children: [
-              {
-                path: '/list/search/article',
-                name: 'SearchArticles',
-                component: () => import('../views/list/TableList'),
-                meta: { title: '搜索列表（文章）', permission: [ 'table' ] }
-              },
-              {
-                path: '/list/search/project',
-                name: 'SearchProjects',
-                component: () => import('../views/list/TableList'),
-                meta: { title: '搜索列表（项目）', permission: [ 'table' ] }
-              },
-              {
-                path: '/list/search/application',
-                name: 'SearchApplications',
-                component: () => import('../views/list/TableList'),
-                meta: { title: '搜索列表（应用）', permission: [ 'table' ] }
-              },
-            ]
-          },
-        ]
-      },
+
 
       // profile
       {
@@ -272,6 +195,85 @@ export const asyncRouterMap = [
                 name: 'NotificationSettings',
                 component: () => import('@/views/account/settings/Notification'),
                 meta: { title: '新消息通知', hidden: true, keepAlive: true, permission: [ 'user' ]  }
+              },
+            ]
+          },
+        ]
+      },
+      // list
+      {
+        path: '/list',
+        name: 'list',
+        component: PageView,
+        redirect: '/list/query-list',
+        meta: { title: '系统管理', icon: 'table', permission: [ 'table' ] },
+        children: [
+          {
+            path: '/list/query-list',
+            name: 'QueryList',
+            component: () => import('@/views/list/TableList'),
+            meta: { title: '查询表格', permission: [ 'table' ] }
+          },
+          {
+            path: '/list/edit-table',
+            name: 'EditList',
+            component: () => import('@/views/list/TableInnerEditList'),
+            meta: { title: '内联编辑表格', permission: [ 'table' ] }
+          },
+          {
+            path: '/list/user-list',
+            name: 'UserList',
+            component: () => import('@/views/list/UserList'),
+            meta: { title: '用户列表', permission: [ 'table' ] }
+          },
+          {
+            path: '/list/role-list',
+            name: 'RoleList',
+            component: () => import('@/views/list/RoleList'),
+            meta: { title: '角色列表', permission: [ 'table' ] }
+          },
+          {
+            path: '/list/permission-list',
+            name: 'PermissionList',
+            component: () => import('@/views/list/PermissionList'),
+            meta: { title: '权限列表', permission: [ 'table' ] }
+          },
+          {
+            path: '/list/basic-list',
+            name: 'BasicList',
+            component: () => import('@/views/list/StandardList'),
+            meta: { title: '标准列表', permission: [ 'table' ] }
+          },
+          {
+            path: '/list/card',
+            name: 'CardList',
+            component: () => import('@/views/list/CardList'),
+            meta: { title: '卡片列表', permission: [ 'table' ] }
+          },
+          {
+            path: '/list/search',
+            name: 'SearchList',
+            component: () => import('@/views/list/search/SearchLayout'),
+            redirect: '/list/search/article',
+            meta: { title: '搜索列表', permission: [ 'table' ] },
+            children: [
+              {
+                path: '/list/search/article',
+                name: 'SearchArticles',
+                component: () => import('../views/list/TableList'),
+                meta: { title: '搜索列表（文章）', permission: [ 'table' ] }
+              },
+              {
+                path: '/list/search/project',
+                name: 'SearchProjects',
+                component: () => import('../views/list/TableList'),
+                meta: { title: '搜索列表（项目）', permission: [ 'table' ] }
+              },
+              {
+                path: '/list/search/application',
+                name: 'SearchApplications',
+                component: () => import('../views/list/TableList'),
+                meta: { title: '搜索列表（应用）', permission: [ 'table' ] }
               },
             ]
           },

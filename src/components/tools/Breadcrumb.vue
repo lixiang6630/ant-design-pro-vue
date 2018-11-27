@@ -30,7 +30,7 @@ export default {
 
       this.name = this.$route.name
       this.$route.matched.forEach((item) => {
-        // item.meta.name === 'dashboard' ? item.path = '/dashboard' : this.$route.path === item.path
+        item.meta.name === 'dashboard' ? item.path = '/dashboard' : this.$route.path === item.path
           this.breadList.push(item)
       })
     }

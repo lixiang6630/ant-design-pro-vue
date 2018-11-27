@@ -83,12 +83,10 @@
       getBreadcrumb() {
 
         this.breadList = []
-        // this.breadList.push({name: 'index', path: '/dashboard/', meta: {title: '首页'}})
-
+        this.breadList.push({name: 'index', path: '/dashboard/', meta: {title: '首页'}})
         this.name = this.$route.name
         this.$route.matched.forEach((item) => {
-          // item.name !== 'index' && this.breadList.push(item)
-          this.breadList.push(item)
+          item.name !== 'index' && this.breadList.push(item)
         })
       }
     },

@@ -1,7 +1,8 @@
 <template>
   <div class="footer">
+    <a-back-top />
     <div class="links">
-      <a href="https://pro.ant.design/" target="_blank">Pro 首页</a>
+      <router-link to="/dashboard">首页</router-link>
       <a href="https://github.com/ant-design/ant-design-pro" target="_blank">
         <a-icon type="github"/>
       </a>
@@ -11,7 +12,7 @@
     <div class="copyright">
       Copyright
       <a-icon type="copyright"/>
-      2018 <span>白鹭学园技术组出品</span>
+      2018 <span>/page/GlobleFooter</span>
     </div>
   </div>
 </template>

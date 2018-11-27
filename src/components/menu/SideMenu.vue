@@ -1,9 +1,9 @@
 <template>
   <a-layout-sider
     :class="['sider', device === 'desktop' ? null : 'shadow', theme, fixSiderbar ? 'ant-fixed-sidemenu' : null ]"
-    width="256px" 
+    width="256px"
     :collapsible="collapsible"
-    v-model="collapsed" 
+    v-model="collapsed"
     :trigger="null">
     <logo />
     <s-menu
