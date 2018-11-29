@@ -25,7 +25,8 @@ import {
   DEFAULT_FIXED_SIDEMENU
 } from "@/store/mutation-types"
 import config from '@/defaultSettings'
-
+import HasPermission from './components/HasPermission';
+Vue.component("has-permission",HasPermission);
 Vue.config.productionTip = false
 
 Vue.use(Storage, config.storageOptions)

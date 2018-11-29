@@ -21,7 +21,19 @@
             <p>
               <i class="address"></i><span>浙江省</span><span>杭州市</span>
             </p>
+            <has-permission hasPermission="test">
+            <h3>拥有的权限：</h3>
+              <h4 v-for="(permission,index) in roles().permissions" :key="index">
+                <i class="address"></i><span>{{permission.permissionId}}</span>==<span>{{permission.permissionName}}</span>
+                <ul>
+                  <li v-for="(action,index) in permission.actionEntitySet" :key="index">
+                    {{action.action}} <==> {{action.describe}}
+                  </li>
+                </ul>
+              </h4>
+            </has-permission>
           </div>
+
           <a-divider />
 
           <div class="account-center-tags">
@@ -91,6 +103,7 @@
 
 <script>
   import PageLayout from '@/components/page/PageLayout'
+  // import HasPermission from '@/components/HasPermission'
   import RouteView from "@/components/layouts/RouteView"
   import { AppPage, ArticlePage, ProjectPage } from './page'
 
@@ -103,7 +116,8 @@
       PageLayout,
       AppPage,
       ArticlePage,
-      ProjectPage
+      ProjectPage,
+      // HasPermission
     },
     data() {
       return {
@@ -133,7 +147,7 @@
       this.getTeams()
     },
     methods: {
-      ...mapGetters(["nickname", "avatar"]),
+      ...mapGetters(["nickname", "avatar","roles"]),
 
       getTeams() {
         this.$http.get('/workplace/teams')

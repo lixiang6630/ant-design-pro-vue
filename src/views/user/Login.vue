@@ -77,13 +77,7 @@
       }
     },
     created () {
-      this.$http.get('/auth/2step-code')
-        .then(res => {
-          this.requiredTwoStepCaptcha = res.result.stepCode
-        }).catch(err => {
-          console.log('2step-code:', err)
-        })
-     // this.requiredTwoStepCaptcha = true
+     this.requiredTwoStepCaptcha = false
 
     },
     methods: {
@@ -126,13 +120,14 @@
         that.loginBtn = true
 
         that.Login(loginParams).then(() => {
-          if (!that.requiredTwoStepCaptcha) {
+          if (that.requiredTwoStepCaptcha) {
             that.stepCaptchaVisible = true
           } else {
             that.loginSuccess()
           }
         }).catch((err) => {
           that.requestFailed(err);
+          console.log(err)
         })
 
       },
