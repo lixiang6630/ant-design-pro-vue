@@ -21,8 +21,7 @@
         </template>
         <a-form-item
           fieldDecoratorId="password"
-          :fieldDecoratorOptions="{rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: this.handlePasswordLevel }
-        ], validateTrigger: ['change', 'blur']}">
+          :fieldDecoratorOptions="{rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}">
           <a-input size="large" type="password" @click="handlePasswordInputClick" autocomplete="false" placeholder="至少6位密码，区分大小写"></a-input>
         </a-form-item>
       </a-popover>
@@ -90,7 +89,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mixinDevice } from '@/utils/mixin.js'
   import { getSmsCaptcha } from '@/api/login'
 
   const levelNames = {
@@ -115,6 +114,7 @@
     name: "Register",
     components: {
     },
+    mixins: [mixinDevice],
     data() {
       return {
         form: null,
@@ -131,9 +131,6 @@
       }
     },
     computed: {
-      ...mapState({
-        isMobile: state => state.app.device === 'mobile',
-      }),
       passwordLevelClass () {
         return levelClass[this.state.passwordLevel]
       },
@@ -198,7 +195,7 @@
       },
 
       handlePasswordInputClick () {
-        if (!this.isMobile) {
+        if (!this.isMobile()) {
           this.state.passwordLevelChecked = true
           return;
         }

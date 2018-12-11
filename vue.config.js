@@ -23,6 +23,7 @@ module.exports = {
   configureWebpack: {
 
   },
+
   chainWebpack: (config) => {
     config.resolve.alias
       .set('@$', resolve('src'))
@@ -33,6 +34,7 @@ module.exports = {
       .set('@layout', resolve('src/layout'))
       .set('@static', resolve('src/static'))
   },
+
   css: {
     loaderOptions: {
       less: {
@@ -49,20 +51,25 @@ module.exports = {
       }
     }
   },
+
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
+        // target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
+        target: 'https://www.easy-mock.com/mock/5b7bce071f130e5b7fe8cd7d/antd-pro',
         ws: false,
         changeOrigin: true
       },
       '/gateway': {
-        target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
+        target: 'https://www.easy-mock.com/mock/5b7bce071f130e5b7fe8cd7d/antd-pro',
+        ws: false,
         changeOrigin: true,
         pathRewrite: {
           '^/gateway': '/api'
         }
       }
     }
-  }
+  },
+
+  lintOnSave: undefined
 }
